@@ -1,3 +1,61 @@
-<script src="https://api.salemove.com/salemove_integration.js"></script>
-<script src="https://s3.amazonaws.com/sweetalert/sweetalert.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://s3.amazonaws.com/sweetalert/sweetalert.css">
+<script>
+sm.getApi({version: 'v1'}).then(function(salemove) {
+  salemove.setIncomingEngagementRequestHandler(function(request) {
+    promptUserToAcceptOrDeclineEngagement(request.timeout).then(function(accepted) {
+      if (accepted) {
+        return request.accept()
+      } else {
+        return request.decline().then(function() {
+          return Promise.reject('User declined.');
+        });
+      }
+    }).then(function() {
+      return promptUserToSelectMedia();
+    }).then(function(mediaSelection) {
+      if (mediaSelection.canceled) {
+        return request.decline().then(function() {
+          return Promise.reject('User declined during media selection.');
+        });
+      } else {
+        return request.selectMedia(mediaSelection.media, mediaSelection.options);
+      }
+    }).then(function() {
+      return request.engagementPromise;
+    }).then(function(engagement) {
+      sweetAlert("You are engaged with " + engagement.operator.name)
+      engagement.addEventListener(engagement.EVENTS.COBROWSING_REQUEST, function(cobrowsingRequest) {
+        cobrowsingRequest.allow()
+      });
+    }).catch(function(error) {
+      if (error.cause === salemove.ERRORS.TIMEOUT) {
+        console.log(salemove.ERRORS.TIMEOUT);
+      } else {
+        console.log(error.cause);
+      }
+    });
+  });
+});
+
+function promptUserToAcceptOrDeclineEngagement(timeout) {
+  var accepted = true;
+  return Promise.resolve(accepted);
+}
+
+function promptUserToSelectMedia() {
+  return Promise.resolve({
+    canceled: false,
+    media: 'text',
+    options: { }
+  });
+}
+
+document.onkeypress=function(e){
+  var evtobj=window.event? event : e;
+  if (evtobj.altKey || evtobj.ctrlKey || evtobj.shiftKey) {
+    if (evtobj.key == 'e'){
+      sweetAlert("Your visitor Id is " + sm.visitorId);
+    }
+  }
+}
+
+</script>

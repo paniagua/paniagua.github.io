@@ -26,6 +26,9 @@ sm.getApi({version: 'v1'}).then(function(salemove) {
       engagement.addEventListener(engagement.EVENTS.COBROWSING_REQUEST, function(cobrowsingRequest) {
         cobrowsingRequest.allow()
       });
+      engagement.addEventListener(engagement.EVENTS.END, function() {
+        sweetAlert("Engagement ended!");
+      });
     }).catch(function(error) {
       if (error.cause === salemove.ERRORS.TIMEOUT) {
         console.log(salemove.ERRORS.TIMEOUT);

@@ -16,7 +16,18 @@ layout: default
       </li>
     {% endfor %}
   </ul>
-
+  <script>
+    sm.getApi({version: 'v1'}).then(function(salemove) {
+      salemove.omnibrowse.getVisitorCode().then(function (visitorCodeResponse) {
+        var visitorCodeContainer = document.createElement('div');
+        visitorCodeContainer.textContent = visitorCodeResponse.code;
+        document.body.appendChild(visitorCodeContainer);
+        setTimeout(function() {
+          document.body.removeChild(visitorCodeContainer);
+        }, visitorCodeResponse.validDuration);
+      });
+    });
+  </script>
   <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
 
 </div>

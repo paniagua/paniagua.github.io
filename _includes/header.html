@@ -2,7 +2,7 @@
 <script src="https://s3.amazonaws.com/sweetalert/sweetalert.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://s3.amazonaws.com/sweetalert/sweetalert.css">
 <script>
-  var installGlia = function(siteId, callback) {
+  var installGlia = function(callback) {
   var gliaIntegrationScriptUrl = 'https://api.salemove.com/salemove_integration.js';
   var scriptElement = document.createElement('script');
 
@@ -14,8 +14,8 @@
   }  
   document.body.append(scriptElement);
 };
-
-installGlia(siteId, function(){
+  
+installGlia(function(){
   // Any post install configuration
 });
 </script>

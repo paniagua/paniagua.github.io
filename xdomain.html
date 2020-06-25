@@ -4,8 +4,8 @@
  <head>
    <script>	
       var url = new URL(window.location.href);
-      var c = url.searchParams.get("session_context");
-      console.log(c);
+      var session_context = url.searchParams.get("session_context");
+      document.cookie="g_session_context="+session_context
    </script>
  </head>
 </html>

@@ -3,10 +3,9 @@
 <html>
  <head>
    <script>	
-     	const url = window.location.href
-			var url = new URL(url);
-			const c = url.searchParams.get("session_context");
-			console.log(c);
+      var url = new URL(window.location.href);
+      var c = url.searchParams.get("session_context");
+      console.log(c);
    </script>
  </head>
 </html>

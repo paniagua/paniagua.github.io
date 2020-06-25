@@ -1,0 +1,12 @@
+<!-- https://api.example.com/app-proxy.html -->
+<!DOCTYPE HTML>
+<html>
+ <head>
+   <script>	
+     	const url = window.location.href
+			var url = new URL(url);
+			const c = url.searchParams.get("session_context");
+			console.log(c);
+   </script>
+ </head>
+</html>
